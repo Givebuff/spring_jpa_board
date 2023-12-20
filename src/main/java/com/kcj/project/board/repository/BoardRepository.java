@@ -9,5 +9,9 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findByName(String title); // 공통 컬럼 name을 title로 변경하여 사용 중
 
+    List<Board> findByNameLike(String title);
+
     List<Board> findByRegMember(Member member);
+
+    List<Board> findByRegMemberAndNameLike(Member member, String title);
 }

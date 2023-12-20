@@ -11,7 +11,11 @@ import java.util.List;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByName(String name);
 
+    List<Member> findByNameLike(String name);
+
     Member findByMemberId(String memberId);
+
+    List<Member> findByMemberIdLike(String MemberId);
 
     List<Member> findByStatus(MemberStatus status);
 

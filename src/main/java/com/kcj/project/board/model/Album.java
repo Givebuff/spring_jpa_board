@@ -15,6 +15,8 @@ public class Album extends BaseModel{
 
     private String directory;
 
+    private Long size;
+
     @ManyToOne
     private Board board;
 }

@@ -24,8 +24,7 @@ public class Board extends BaseModel{
     @Lob
     private String content;
 
-    @ColumnDefault("0")
-    private int viewCount;
+    private int viewCount = 0;
 
     @OneToOne
     private Album thumbNail;

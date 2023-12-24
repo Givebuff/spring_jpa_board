@@ -5,9 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -19,8 +22,10 @@ public class Member extends BaseModel {
 
     private String password;
 
+    @ElementCollection
+    @CollectionTable(name = "MemberRole", joinColumns = @JoinColumn(name = "id"))
     @Enumerated(EnumType.STRING)
-    private MemberRole role;
+    private Set<MemberRole> role = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
@@ -36,4 +41,6 @@ public class Member extends BaseModel {
 
     @OneToMany(mappedBy = "regMember")
     private List<Like> likes = new ArrayList<>();
+
+    private Integer failCount = 0;
 }

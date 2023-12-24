@@ -1,17 +1,21 @@
 package com.kcj.project.board.service;
 
+import com.kcj.project.board.detail.MemberDetail;
 import com.kcj.project.board.model.Member;
 import com.kcj.project.board.model.MemberRole;
 import com.kcj.project.board.model.MemberStatus;
 import com.kcj.project.board.repository.MemberRepository;
 import com.kcj.project.board.util.DatabaseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MemberService {
+public class MemberService implements UserDetailsService {
     @Autowired private MemberRepository memberRepository;
     @Autowired private CryptoService cryptoService;
 
@@ -78,5 +82,15 @@ public class MemberService {
         member.setStatus(MemberStatus.JOIN);
 
         return member;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Member member = findByMemberId(username);
+        if(member == null){
+            throw new UsernameNotFoundException("Login Fail");
+        }
+
+        return new MemberDetail(member);
     }
 }

@@ -63,7 +63,6 @@ public class BoardService {
 
         board.setName("Init Title");
         board.setContent("Init Content <br> This is Content");
-        board.setRegMember(memberService.defaultMember());
         board.setViewCount(1);
 
         return board;

@@ -19,7 +19,7 @@ import java.util.List;
 public class MemberService implements UserDetailsService {
     @Autowired private MemberRepository memberRepository;
     @Autowired private CryptoService cryptoService;
-    @Value("@{board.login.fail.max.count}")
+    @Value("${board.login.fail.max.count}")
     private String loginFailMaxCount;
 
     public Member findById(Long id){
@@ -70,11 +70,11 @@ public class MemberService implements UserDetailsService {
     }
 
     public void defaultUserSetting(){
-        if(findByMemberId("member") == null) memberRepository.save(defaultMember());
-        if(findByMemberId("admin") == null) memberRepository.save(defaultAdmin());
+        if(findByMemberId("member") == null) defaultMember();
+        if(findByMemberId("admin") == null) defaultAdmin();
     }
 
-    protected Member defaultMember(){
+    protected void defaultMember(){
         Member member = new Member();
 
         member.setMemberId("member");
@@ -84,10 +84,10 @@ public class MemberService implements UserDetailsService {
         member.getRole().add(MemberRole.GUEST);
         member.setStatus(MemberStatus.JOIN);
 
-        return member;
+        memberRepository.save(member);
     }
 
-    private Member defaultAdmin(){
+    private void defaultAdmin(){
         Member member = new Member();
 
         member.setMemberId("admin");
@@ -98,7 +98,7 @@ public class MemberService implements UserDetailsService {
         member.getRole().add(MemberRole.GUEST);
         member.setStatus(MemberStatus.JOIN);
 
-        return member;
+        memberRepository.save(member);
     }
 
     @Override

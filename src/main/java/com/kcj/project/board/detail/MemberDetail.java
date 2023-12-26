@@ -13,7 +13,7 @@ import java.util.HashSet;
 
 public class MemberDetail implements UserDetails {
     private final Member member;
-    @Value("@{board.role.prefix}")
+    @Value("${board.role.prefix}")
     private String rolePrefix;
 
     public MemberDetail(Member member){
@@ -22,7 +22,7 @@ public class MemberDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collection = new HashSet<>(member.getRole().size());
+        Collection<GrantedAuthority> collection = new HashSet<>();
 
         for (MemberRole role: member.getRole())
             collection.add(new SimpleGrantedAuthority(rolePrefix + role));

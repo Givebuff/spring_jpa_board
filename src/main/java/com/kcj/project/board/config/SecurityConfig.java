@@ -20,9 +20,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Value("@{board.role.prefix}")
+    @Value("${board.role.prefix}")
     private String rolePrefix;
-    @Value("@{board.remember.me.login.cookie.name}")
+    @Value("${board.remember.me.login.cookie.name}")
     private String cookieName;
 
     @Bean
@@ -48,7 +48,6 @@ public class SecurityConfig {
         http
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").hasRole("")
                         .anyRequest()
                         .permitAll()
                 )
@@ -56,7 +55,7 @@ public class SecurityConfig {
                 .formLogin(loginSecurity -> {
                     loginSecurity
                             .loginPage("/login")
-                            .loginProcessingUrl("login/sign")
+                            .loginProcessingUrl("/login/sign")
                             .usernameParameter("memberId")
                             .passwordParameter("password")
                             .successHandler((request, response, authentication) -> {
@@ -64,16 +63,16 @@ public class SecurityConfig {
                             })
                             .failureHandler((request, response, exception) -> {
                                 if(exception instanceof UsernameNotFoundException){
-                                    System.out.println("UsernameNotFoundException");
+                                    response.sendRedirect("/login/fail/tag/FOUND");
                                 } else if (exception instanceof LockedException) {
-                                    System.out.println("LockedException");
+                                    response.sendRedirect("/login/fail/tag/LOCK");
                                 } else if (exception instanceof DisabledException) {
-                                    System.out.println("DisabledException");
+                                    response.sendRedirect("/login/fail/tag/DISABLE");
                                 } else if (exception instanceof BadCredentialsException) {
-                                    System.out.println("BadCredentialsException");
+                                    response.sendRedirect("/login/fail/tag/CREDENTIAL");
+                                } else {
+                                    response.sendRedirect("/login/fail/id/" + request.getParameter("memberId"));
                                 }
-
-                                response.sendRedirect("/login/fail/" + request.getParameter("memberId"));
                             })
                             .permitAll();
                 })

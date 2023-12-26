@@ -22,7 +22,7 @@ public class Member extends BaseModel {
 
     private String password;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "MemberRole", joinColumns = @JoinColumn(name = "id"))
     @Enumerated(EnumType.STRING)
     private Set<MemberRole> role = new HashSet<>();

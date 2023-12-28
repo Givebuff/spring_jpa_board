@@ -22,6 +22,8 @@ public class Member extends BaseModel {
 
     private String password;
 
+    private String email;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "MemberRole", joinColumns = @JoinColumn(name = "id"))
     @Enumerated(EnumType.STRING)

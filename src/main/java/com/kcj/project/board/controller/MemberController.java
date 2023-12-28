@@ -8,7 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class MemberController {
@@ -21,14 +26,14 @@ public class MemberController {
     }
 
     @GetMapping("/login/fail/id/{memberId}")
-    public String loginFailId(@PathVariable("memberId") String memberId, Model model){
+    public String loginFailId(@PathVariable("memberId") String memberId, RedirectAttributes redirectAttributes){
         Member member = memberService.findByMemberId(memberId);
 
         if(member != null) memberService.loginFail(member);
 
-        model.addAttribute("message", LoginFailMessageUtil.getFailTag("FOUND"));
+        redirectAttributes.addAttribute("message", LoginFailMessageUtil.getFailTag("FOUND"));
 
-        return "/login";
+        return "redirect:/login";
     }
 
     @GetMapping("/login/fail/tag/{tag}")
@@ -36,5 +41,26 @@ public class MemberController {
         redirectAttributes.addFlashAttribute("message", LoginFailMessageUtil.getFailTag(tag));
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/registry")
+    public String registryMemberPage(){
+        return "/registry";
+    }
+
+    @PostMapping("/registry")
+    public String registryMember(
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName,
+            @RequestParam("memberId") String memberId,
+            @RequestParam("password") String password,
+            @RequestParam("profile") List<MultipartFile> profile,
+            Model model
+    ){
+        String page = "redirect:/login";
+
+
+
+        return page;
     }
 }

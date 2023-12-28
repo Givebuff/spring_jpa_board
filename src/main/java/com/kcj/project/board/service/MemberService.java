@@ -74,6 +74,10 @@ public class MemberService implements UserDetailsService {
         if(findByMemberId("admin") == null) defaultAdmin();
     }
 
+    public void initPassword(Member member){
+        member.setPassword(cryptoService.getPassword("123123"));
+    }
+
     protected void defaultMember(){
         Member member = new Member();
 

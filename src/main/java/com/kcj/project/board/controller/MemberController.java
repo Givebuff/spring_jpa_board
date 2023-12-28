@@ -43,15 +43,16 @@ public class MemberController {
         return "redirect:/login";
     }
 
-    @GetMapping("/registry")
-    public String registryMemberPage(){
-        return "/registry";
+    @GetMapping("/member/register")
+    public String registerMemberPage(){
+        return "/member/register";
     }
 
-    @PostMapping("/registry")
-    public String registryMember(
+    @PostMapping("/member/register")
+    public String registerMember(
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
+            @RequestParam("email") String email,
             @RequestParam("memberId") String memberId,
             @RequestParam("password") String password,
             @RequestParam("profile") List<MultipartFile> profile,
@@ -62,5 +63,10 @@ public class MemberController {
 
 
         return page;
+    }
+
+    @GetMapping("/member/forget")
+    public String forgetId(){
+        return "/member/forget";
     }
 }

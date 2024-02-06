@@ -69,4 +69,9 @@ public class MemberController {
     public String forgetId(){
         return "/member/forget";
     }
+
+    @GetMapping("/page")
+    public String pageTest() {
+        return "/tailwind/page";
+    }
 }
